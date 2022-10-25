@@ -15,4 +15,5 @@ function amountVowels() {
   return count;
 }
 
+console.log(string);
 console.log(count);
