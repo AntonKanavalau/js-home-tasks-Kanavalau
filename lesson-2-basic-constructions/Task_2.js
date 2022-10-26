@@ -1,38 +1,68 @@
 var firstName;
 var secondName;
 var lastName;
-/*var secondName = prompt('Введите Фамилию', '');
-var lastName = prompt('Введите Отчество', '');
-var age = parseInt(prompt('Сколько Вам лет', ''));
-*/
+var age;
 
 ValidateFirstName();
+ValidateSecondName();
+ValidateLastName();
+ValidateAge();
 
-secondName = prompt('Введите Фамилию', '');
-lastName = prompt('Введите Отчество', '');
-
-//Validation function list
+//Validation First Name
 function ValidateFirstName() {
   firstName = prompt('Введите Имя', '');
 
   if (!firstName) {
-    alert('Все не так просто. \nПожалуйста, введите Имя.');
+    alert('Все не так просто.\nМожно использовать только буквы. \nПожалуйста, введите Имя.');
     return ValidateFirstName();
   }
   if (!/^[a-zA-Z]+$/.test(firstName)) {
-    alert('Все не так просто. \nПожалуйста, введите Имя.');
+    alert('Все не так просто.\nМожно использовать только буквы. \nПожалуйста, введите Имя.');
     return ValidateFirstName();
   }
 }
 
+//Validation Second Name
+function ValidateSecondName() {
+  secondName = prompt('Введите Фамилию', '');
 
+  if (!secondName) {
+    alert('Все не так просто.\nМожно использовать только буквы. \nПожалуйста, введите Фамилию.');
+    return ValidateSecondName();
+  }
+  if (!/^[a-zA-Z]+$/.test(secondName)) {
+    alert('Все не так просто.\nМожно использовать только буквы. \nПожалуйста, введите Фамилию.');
+    return ValidateSecondName();
+  }
+}
 
+//Validation Last Name
+function ValidateLastName() {
+  lastName = prompt('Введите Отчество', '');
 
+  if (!lastName) {
+    alert('Все не так просто.\nМожно использовать только буквы. \nПожалуйста, введите Отчество.');
+    return ValidateLastName();
+  }
+  if (!/^[a-zA-Z]+$/.test(lastName)) {
+    alert('Все не так просто.\nМожно использовать только буквы. \nПожалуйста, введите Отчество.');
+    return ValidateLastName();
+  }
+}
+
+//Validation Age
+function ValidateAge() {
+  age = parseInt(prompt('Сколько лет', ''));
+
+  if (!age) {
+    alert('Все не так просто.\nМожно использовать только цифры. \nПожалуйста, введите возраст.');
+    return ValidateAge();
+  }
+}
 
 var sex = confirm('Ваш пол - мужской?');
 var pension;
 
-/*
   if (sex && (age >= 63)) {
     pension = true;
   } else if (!sex && (age >= 58)) {
@@ -53,4 +83,4 @@ var pension;
     'ваш пол: ' + sex + '\n' +
     'вы на пенсии: ' + pension;
 
-  alert(message);*/
+  alert(message);
