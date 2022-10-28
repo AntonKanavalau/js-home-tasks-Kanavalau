@@ -37,11 +37,7 @@ alert(message);
 function ValidateFirstName() {
   firstName = prompt('Введите Имя', '');
 
-  if (!firstName) {
-    alert('Все не так просто.\nМожно использовать только буквы. \nПожалуйста, введите Имя.');
-    return ValidateFirstName();
-  }
-  if (!/^[a-zA-Zа-яА-Я]+$/.test(firstName)) {
+  if (!firstName || !/^[a-zA-Zа-яА-Я]+$/.test(firstName)) {
     alert('Все не так просто.\nМожно использовать только буквы. \nПожалуйста, введите Имя.');
     return ValidateFirstName();
   }
@@ -51,11 +47,7 @@ function ValidateFirstName() {
 function ValidateSecondName() {
   secondName = prompt('Введите Фамилию', '');
 
-  if (!secondName) {
-    alert('Все не так просто.\nМожно использовать только буквы. \nПожалуйста, введите Фамилию.');
-    return ValidateSecondName();
-  }
-  if (!/^[a-zA-Zа-яА-Я]+$/.test(secondName)) {
+  if (!secondName || !/^[a-zA-Zа-яА-Я]+$/.test(secondName)) {
     alert('Все не так просто.\nМожно использовать только буквы. \nПожалуйста, введите Фамилию.');
     return ValidateSecondName();
   }
@@ -65,11 +57,7 @@ function ValidateSecondName() {
 function ValidateLastName() {
   lastName = prompt('Введите Отчество', '');
 
-  if (!lastName) {
-    alert('Все не так просто.\nМожно использовать только буквы. \nПожалуйста, введите Отчество.');
-    return ValidateLastName();
-  }
-  if (!/^[a-zA-Zа-яА-Я]+$/.test(lastName)) {
+  if (!lastName || !/^[a-zA-Zа-яА-Я]+$/.test(lastName)) {
     alert('Все не так просто.\nМожно использовать только буквы. \nПожалуйста, введите Отчество.');
     return ValidateLastName();
   }
