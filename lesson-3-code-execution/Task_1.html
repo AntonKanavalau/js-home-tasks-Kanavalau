@@ -14,17 +14,20 @@
       };
 
       var count = [];
-
+      var maxValue;
+      
       for (var char in tasksCompleted) {
         count.push(tasksCompleted[char]);
+
+        maxValue = Math.max.apply(null, count);
       }
-      for (var i = 0; i < count.length - 1; i++) {
-        for (let j = i + 1; j < count.length; j++) {
-          var result = count[j];
+
+      /*Окей, это же можно как-то объединить с кодом выше?*/
+      for (char in tasksCompleted) {
+        if (maxValue === tasksCompleted[char]) {
+          console.log(char + ' ' + maxValue);
         }
       }
-      console.log(result);
-
     </script>
   </body>
 </html>
