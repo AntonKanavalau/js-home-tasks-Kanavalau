@@ -5,6 +5,7 @@
     <title>Task_1</title>
   </head>
   <body>
+    <!--Variant 1-->
     <script>
       var tasksCompleted = {
         'Anna': 29,
@@ -15,7 +16,7 @@
 
       var count = [];
       var maxValue;
-      
+
       for (var char in tasksCompleted) {
         count.push(tasksCompleted[char]);
 
@@ -29,5 +30,28 @@
         }
       }
     </script>
+
+    <!--Variant 2-->
+    <script>
+      var tasksCompleted = {
+        'Anna': 29,
+        'Serg': 35,
+        'Elena': 1,
+        'Anton': 99
+      };
+
+      var count = 0;
+      var key;
+
+      for (var char in tasksCompleted) {
+        if (count < tasksCompleted[char]) {
+          count = tasksCompleted[char];
+          key = char;
+        }
+      }
+
+      console.log(key + ' ' + count)
+    </script>
+
   </body>
 </html>
