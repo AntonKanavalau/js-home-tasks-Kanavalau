@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Task_1</title>
+  </head>
+  <body>
+    <script>
+      'use strict';
+
+      var x = prompt('Количество строк', '');
+      var y = prompt('Количество столбцов', '');
+
+      var data = ' #';
+      var transfer = '\n';
+
+      var line = '';
+
+      var i;
+      var j;
+
+      for (i = 0; i < x; i++) {
+        for (j = 0; j < y; j++) {
+          line += data;
+        }
+        line += transfer;
+      }
+
+      console.log(line)
+    </script>
+
+
+  </body>
+</html>
