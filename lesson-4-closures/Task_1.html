@@ -19,11 +19,19 @@
       var i;
       var j;
 
-      for (i = 0; i < x; i++) {
-        for (j = 0; j < y; j++) {
-          line += data;
+      function isNumeric(n) {
+        return !isNaN(parseFloat(n)) && isFinite(n);
+      }
+
+      if (isNumeric(x) && isNumeric(y)) {
+        for (i = 0; i < x; i++) {
+          for (j = 0; j < y; j++) {
+            line += data;
+          }
+          line += transfer;
         }
-        line += transfer;
+      } else {
+        alert('Нужно ввести число');
       }
 
       console.log(line)
