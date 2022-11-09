@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Task_2</title>
+  </head>
+  <body>
+    <script>
+      'use strict';
+
+      var name = prompt('Какой класс нужно удалить?', '');
+      var obj = {
+        className: 'open menu'
+      };
+      var string = '';
+
+      findRemove(obj, name);
+
+      function findRemove(obj, name) {
+        string = obj.className;
+
+        var rExp = new RegExp(name, 'g');
+        var newString = string.replace(rExp, '');
+
+        obj.className = newString.trim();
+      }
+      console.log('Какой класс удаляем: '+ name);
+      console.log(obj);
+    </script>
+  </body>
+</html>
