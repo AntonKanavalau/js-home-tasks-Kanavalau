@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Task_1</title>
+  </head>
+  <body>
+    <script>
+      'use strict';
+
+      var x = prompt('Количество строк', '');
+      var y = prompt('Количество столбцов', '');
+
+      var data = ' #';
+      var transfer = '\n';
+
+      var line = '';
+
+      var i;
+      var j;
+
+      function isNumeric(n) {
+        return !isNaN(parseFloat(n)) && isFinite(n);
+      }
+
+      if (isNumeric(x) && isNumeric(y)) {
+        for (i = 0; i < x; i++) {
+          for (j = 0; j < y; j++) {
+            line += data;
+          }
+          line += transfer;
+        }
+      } else {
+        alert('Нужно ввести число');
+        location.reload();
+      }
+
+      console.log(line)
+    </script>
+
+
+  </body>
+</html>
