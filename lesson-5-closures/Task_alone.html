@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Alone task</title>
+  </head>
+  <body>
+    <script>
+      var Jhon = {
+        bills: [124, 48, 268, 180, 42],
+        calculateTips: function () {
+          var tips = [];
+          for (var i = 0; i < this.bills.length; i++) {
+            function tipCalculator(bill) {
+              var percentage;
+              if (bill < 50) {
+                percentage = 20;
+              } else if (bill >= 50 && bill < 200) {
+                percentage = 15;
+              } else {
+                percentage = 10;
+              }
+              return Math.round (percentage * bill) / 100;
+            }
+          }
+          return this.tips = [tipCalculator(this.bills[0]),
+            tipCalculator(this.bills[1]),
+            tipCalculator(this.bills[2]),
+            tipCalculator(this.bills[3]),
+            tipCalculator(this.bills[4])];
+        }
+      }
+
+      console.log(Jhon.calculateTips());
+    </script>
+  </body>
+</html>
