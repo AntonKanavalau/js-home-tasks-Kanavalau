@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Alone task</title>
+  </head>
+  <body>
+    <script>
+      var Jhon = {
+        bills: [124, 48, 268, 180, 42],
+        calculateTips: function () {
+          for (var i = 0; i < this.bills.length; i++) {
+            function tipCalculator(bill) {
+              var percentage;
+              if (bill < 50) {
+                percentage = 20;
+              } else if (bill >= 50 && bill < 200) {
+                percentage = 15;
+              } else {
+                percentage = 10;
+              }
+              return Math.round (percentage * bill) / 100;
+            }
+          }
+          return this.tips = [tipCalculator(this.bills[0]),
+            tipCalculator(this.bills[1]),
+            tipCalculator(this.bills[2]),
+            tipCalculator(this.bills[3]),
+            tipCalculator(this.bills[4])];
+        },
+        calculateFinalSum: function() {
+           this.finalSum = [this.bills[0] + this.calculateTips()[0],
+             this.bills[0] + this.calculateTips()[1],
+             this.bills[0] + this.calculateTips()[2],
+             this.bills[0] + this.calculateTips()[3],
+             this.bills[0] + this.calculateTips()[4]];
+           return this.finalSum;
+        }
+      }
+      console.log('Чаевые Джона: '+ Jhon.calculateTips());
+      console.log('Сколько в итоге потратил Джон: '+Jhon.calculateFinalSum());
+      console.log('--------------------------------------------------------');
+
+      var Mark = {
+        bills: [77, 375, 110, 45],
+        calculateTips: function () {
+          for (var i = 0; i < this.bills.length; i++) {
+            function tipCalculator(bill) {
+              var percentage;
+              if (bill < 50) {
+                percentage = 20;
+              } else if (bill >= 50 && bill < 200) {
+                percentage = 15;
+              } else {
+                percentage = 10;
+              }
+              return Math.round (percentage * bill) / 100;
+            }
+          }
+          return this.tips = [tipCalculator(this.bills[0]),
+            tipCalculator(this.bills[1]),
+            tipCalculator(this.bills[2]),
+            tipCalculator(this.bills[3])]
+        },
+      }
+
+      var averageMark;
+      function calculateAverageMark() {
+         var char = 0;
+         for (var i = 0; i < Mark.calculateTips().length; i++) {
+           char += Mark.calculateTips()[i];
+         }
+          averageMark =  char / Mark.calculateTips().length;
+         console.log('Среднее значение чаевых Марка: ' + averageMark);
+       }
+
+      console.log('Чаевые Марка: '+ Mark.calculateTips());
+      calculateAverageMark();
+      console.log('--------------------------------------------------------');
+
+      var averageJhon;
+      function calculateAverageJhon() {
+        var char = 0;
+        for (var i = 0; i < Jhon.calculateTips().length; i++) {
+          char += Jhon.calculateTips()[i];
+        }
+        averageJhon =  Math.round((char / Jhon.calculateTips().length), 0.01);
+        console.log('Среднее значение чаевых Джона: ' + averageJhon);
+      }
+
+      console.log('Чаевые Джона: '+ Jhon.calculateTips());
+      calculateAverageJhon();
+      console.log('--------------------------------------------------------');
+
+      if(averageMark > averageJhon) {
+        console.log('В среднем Марк заплатил больше Джона: '+ averageMark);
+      } else if(averageMark < averageJhon){
+        console.log('В среднем Джон заплатил больше Марка: '+ averageJhon);
+      }else {
+        console.log('Оба в среднем заплатили одинаковую сумму: '+ averageMark);
+      }
+
+    </script>
+  </body>
+</html>
