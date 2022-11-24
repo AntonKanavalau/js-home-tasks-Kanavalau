@@ -53,6 +53,10 @@ function checkTrueAns(obj, custAnswer) {
   if (obj.ans.findIndex(item => item === obj.trueAns) === custAnswer - 1) {
     alert('Answer is True.');
     console.log('Answer is True.');
+  } else if (isNaN(obj) || custAnswer === 0) {
+    alert('Please, you must select an answer.');
+    console.log('Please, you must select an answer.');
+    location.reload();
   } else {
     alert((`Answer is False. Your answer was ${custAnswer}-${obj.ans.find(item => item === obj.ans[custAnswer - 1])}.\nTrue Answer is ${(obj.ans.findIndex(item => item === obj.trueAns)) + 1} ${(obj.ans.find(item => item === obj.trueAns))}.`));
     console.log(`Answer is False. Your answer was ${custAnswer}-${obj.ans.find(item => item === obj.ans[custAnswer - 1])}.\nTrue Answer is ${(obj.ans.findIndex(item => item === obj.trueAns)) + 1}-${(obj.ans.find(item => item === obj.trueAns))}.`);
