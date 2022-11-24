@@ -2,11 +2,19 @@
 //ans - variants answer
 //trueAns - true answer
 
-function Question(q, trueAns) {
+var Question = function (q, trueAns) {
   this.task = 'Complete the time expressions with IN, AT or ON';
   this.q = q;
   this.ans = ['in', 'at', 'on'];
   this.trueAns = trueAns;
+}
+
+Question.prototype.numberingAns = function () {
+  var str = '';
+  for (var i = 0; i < this.ans.length; i++) {
+    str += `${i + 1}. ${this.ans[i]} \n`;
+  }
+  return str;
 }
 
 var allQuestions = [];
@@ -25,9 +33,8 @@ var q6 = new Question('__ eight o\'clock', 'at');
 allQuestions.push(q6);
 
 randomQuestion(allQuestions);
-numberingAns(obj);
 
-var custAnswer = parseInt(prompt(obj.task + '\n' + '\n' + obj.q + '\n' + numberingAns(obj)));
+var custAnswer = parseInt(prompt(obj.task + '\n' + '\n' + obj.q + '\n' + obj.numberingAns()));
 
 checkTrueAns(obj, custAnswer);
 
@@ -41,24 +48,16 @@ function randomQuestion(allQuestions) {
   return obj;
 }
 
-function numberingAns(obj) {
-  var str = '';
-  for (var i = 0; i < obj.ans.length; i++) {
-    str += `${i + 1}. ${obj.ans[i]} \n`;
-  }
-  return str;
-}
-
 function checkTrueAns(obj, custAnswer) {
   if (obj.ans.findIndex(item => item === obj.trueAns) === custAnswer - 1) {
     alert('Answer is True.');
     console.log('Answer is True.');
-  } else if (isNaN(obj) || custAnswer === 0) {
+  } else if (isNaN(custAnswer) || custAnswer === '') {
     alert('Please, you must select an answer.');
     console.log('Please, you must select an answer.');
     location.reload();
   } else {
-    alert((`Answer is False. Your answer was ${custAnswer}-${obj.ans.find(item => item === obj.ans[custAnswer - 1])}.\nTrue Answer is ${(obj.ans.findIndex(item => item === obj.trueAns)) + 1} ${(obj.ans.find(item => item === obj.trueAns))}.`));
+    alert((`Answer is False. Your answer was ${custAnswer}-${obj.ans.find(item => item === obj.ans[custAnswer - 1])}.\nTrue Answer is ${(obj.ans.findIndex(item => item === obj.trueAns)) + 1}-${(obj.ans.find(item => item === obj.trueAns))}.`));
     console.log(`Answer is False. Your answer was ${custAnswer}-${obj.ans.find(item => item === obj.ans[custAnswer - 1])}.\nTrue Answer is ${(obj.ans.findIndex(item => item === obj.trueAns)) + 1}-${(obj.ans.find(item => item === obj.trueAns))}.`);
   }
 }
