@@ -46,13 +46,20 @@
   questions[n].checkAnswer(answer);
 
 
-/*
-  function callbackDisplayQuestion() {
-    return Question.displayQuestion(){
-      Object.checkAnswer();
+//У меня ступр...
+/*  questions.then(Question.prototype.displayQuestion);*/
+
+/*  function callbackDisplayQuestion(displayQuestion, checkAnswer) {
+    if (isNaN(answer)) {
+      questions[n].displayQuestion();
+      questions[n].checkAnswer(answer);
+    } else {
+      console.log('Stop!');
     }
-  }*/
+  }
+
   console.log('-------------------------------------');
-  console.log(questions);
+  console.log('-------------------------------------');
+  console.log(callbackDisplayQuestion(n));*/
 
 })();
