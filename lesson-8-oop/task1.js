@@ -14,10 +14,12 @@
     }
   }
 
-  Question.prototype.checkAnswer = function (answer) {
-    if (answer === this.correct) {
-      console.log('Correct answer!');
+  var total = 0;
 
+  Question.prototype.checkAnswer = function (answer) {
+    if (answer == this.correct) {
+      console.log('Correct answer!');
+      return total += this.point;
     } else {
       console.log('Wrong answer. Try again :)')
     }
@@ -37,29 +39,24 @@
 
   var questions = [q1, q2, q3];
 
-  var n = Math.floor(Math.random() * questions.length);
+  repeatQuestion(questions);
 
-  questions[n].displayQuestion();
-
-  var answer = parseInt(prompt('Please select the correct answer.'));
-
-  questions[n].checkAnswer(answer);
-
-
-//У меня ступр...
-/*  questions.then(Question.prototype.displayQuestion);*/
-
-/*  function callbackDisplayQuestion(displayQuestion, checkAnswer) {
-    if (isNaN(answer)) {
-      questions[n].displayQuestion();
-      questions[n].checkAnswer(answer);
-    } else {
-      console.log('Stop!');
-    }
+  var totalPoint = function (total) {
+    console.log('Total Correct answer: ' + total);
   }
 
-  console.log('-------------------------------------');
-  console.log('-------------------------------------');
-  console.log(callbackDisplayQuestion(n));*/
+  totalPoint(total);
 
+  function repeatQuestion() {
+    do {
+      var n = Math.floor(Math.random() * questions.length);
+
+      questions[n].displayQuestion();
+
+      var answer = prompt('Please select the correct answer.');
+
+      questions[n].checkAnswer(answer);
+
+    } while (answer !== 'exit');
+  }
 })();
