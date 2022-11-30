@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <script src="HashStorage.js"></script>
+    <title>Task</title>
+  </head>
+  <body>
+    <div class="container">
+      <div id="output"></div>
+      <button id="btn-AddValue">Добавить информацию</button>
+      <button id="btn-GetValue">Получить информацию</button>
+      <button id="btn-DeleteValue">Удалить информацию</button>
+      <button id="btn-GetKeys">Перечень ключей</button>
+      <button id="btn-Clear">Очистить окно информации</button>
+
+      <script>
+        'use strict';
+
+        init();
+
+        function init() {
+          document.getElementById('output').textContent = '';
+        }
+
+        //Clear window
+        document.getElementById('btn-Clear').addEventListener('click', function () {
+          init();
+        })
+
+        var DrinkStorage = new THashStorage();
+
+        //AddValue
+        document.getElementById('btn-AddValue').addEventListener('click', function () {
+          var Key = prompt('Информацию о чем вы хотите добавить?', '');
+          var Value = prompt('Укажите информацию', '');
+          DrinkStorage.AddValue(Key, Value);
+        });
+
+        //GetValue
+        document.getElementById('btn-GetValue').addEventListener('click', function () {
+          var Key = prompt('Информацию о чем вы хотите вывести?', '');
+          DrinkStorage.GetValue(Key);
+          if (DrinkStorage[Key] === undefined) {
+            document.getElementById('output').textContent = 'This value is UNDEFINED';
+          } else {
+            document.getElementById('output').textContent = DrinkStorage[Key];
+          }
+        });
+
+        //DeleteValue
+        document.getElementById('btn-DeleteValue').addEventListener('click', function () {
+          var Key = prompt('Информацию о чем вы хотите удалить?', '');
+          DrinkStorage.DeleteValue(Key);
+          document.getElementById('output').textContent = Key + ' удален!';
+
+        });
+
+        //GetKeys
+        document.getElementById('btn-GetKeys').addEventListener('click', function () {
+          DrinkStorage.GetKeys();
+          document.getElementById('output').textContent = DrinkStorage.GetKeys();
+        });
+      </script>
+    </div>
+  </body>
+</html>
