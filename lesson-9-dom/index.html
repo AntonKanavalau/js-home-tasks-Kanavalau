@@ -2,17 +2,20 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="index.css">
     <script src="HashStorage.js"></script>
     <title>Task</title>
   </head>
   <body>
     <div class="container">
       <div id="output"></div>
-      <button id="btn-AddValue">Добавить информацию</button>
-      <button id="btn-GetValue">Получить информацию</button>
-      <button id="btn-DeleteValue">Удалить информацию</button>
-      <button id="btn-GetKeys">Перечень ключей</button>
-      <button id="btn-Clear">Очистить окно информации</button>
+      <div class="btn-list">
+        <button id="btn-AddValue">Добавить информацию</button>
+        <button id="btn-GetValue">Получить информацию</button>
+        <button id="btn-DeleteValue">Удалить информацию</button>
+        <button id="btn-GetKeys">Перечень ключей</button>
+        <button id="btn-Clear">Очистить окно информации</button>
+      </div>
 
       <script>
         'use strict';
@@ -40,11 +43,14 @@
         //GetValue
         document.getElementById('btn-GetValue').addEventListener('click', function () {
           var Key = prompt('Информацию о чем вы хотите вывести?', '');
+
           DrinkStorage.GetValue(Key);
           if (DrinkStorage[Key] === undefined) {
-            document.getElementById('output').textContent = 'This value is UNDEFINED';
+            info = document.createTextNode('This value is UNDEFINED');
+            createNode(info);
           } else {
-            document.getElementById('output').textContent = DrinkStorage[Key];
+            info = document.createTextNode(DrinkStorage[Key]);
+            createNode(info);
           }
         });
 
@@ -52,15 +58,27 @@
         document.getElementById('btn-DeleteValue').addEventListener('click', function () {
           var Key = prompt('Информацию о чем вы хотите удалить?', '');
           DrinkStorage.DeleteValue(Key);
-          document.getElementById('output').textContent = Key + ' удален!';
-
+          info = document.createTextNode(Key + ' удален!');
+          createNode(info);
         });
 
         //GetKeys
         document.getElementById('btn-GetKeys').addEventListener('click', function () {
           DrinkStorage.GetKeys();
-          document.getElementById('output').textContent = DrinkStorage.GetKeys();
+          info = document.createTextNode(DrinkStorage.GetKeys());
+          createNode(info);
         });
+
+        //Add text
+        var info;
+
+        function createNode(info) {
+          var outputBlock = document.getElementById('output');
+          var tagTextElem = document.createElement('p');
+
+          tagTextElem.appendChild(info);
+          outputBlock.appendChild(tagTextElem);
+        }
       </script>
     </div>
   </body>
