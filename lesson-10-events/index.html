@@ -22,54 +22,45 @@
         {label: 'Опубликовать:', elemtype:'submit', value:'Опубликовать'},
       ];
 
-      console.log(formElements);
-      console.log(typeof formElements[7].label);
-
       createForm('NameForm', formElements);
 
       function createForm(fName, fElements) {
         var form = document.forms[fName];
 
-        addLabel(fElements);
+        addElementsForm(fElements, form);
+      }
 
-        function addLabel(fElements) {
-          for (var i = 0; i < fElements.length; i++) {
-            if (typeof fElements[i].label === 'string') {
-              var label = createLabel(fElements[i]);
-              form.appendChild(label);
-
-              var input = createInput(fElements[i])
-              form.appendChild(input);
-              addBr(form)
-            } /*else {
-              obj = fElements[i].label;
-              for (var j = 0; j < obj.length; j++) {
-                label = createLabel(obj[j]);
-                form.appendChild(label);
-
-                addBr(form);
-
-
-              }
-              console.log(obj);
-            }*/
+      function addElementsForm(elements, form) {
+        for (var i = 0; i < elements.length; i++) {
+          if (typeof elements[i].label === 'string') {
+            var label = createLabel(elements[i]);
+            form.appendChild(label);
+            var input = createInput(elements[i])
+            form.appendChild(input);
+            addBr(form);
+          }else if(elements[i].label === undefined){
+            createTeatArea(elements[i], form);
+            addBr(form);
+          }else if (Array.isArray(elements[i].label)) {
+            addArrLabel(elements[i], form);
+            addBr(form);
           }
         }
       }
 
       function addBr(tagInForm) {
-          var br = document.createElement('br');
-          tagInForm.insertAdjacentElement('beforeend', br);
+        var br = document.createElement('br');
+        tagInForm.insertAdjacentElement('beforeend', br);
       }
 
       function createLabel(labelData) {
-        if (labelData.elemtype !== 'submit'){
+        if (labelData.elemtype !== 'submit') {
           var input = document.createElement('label');
-          input.setAttribute('for', labelData.elemtype);
+          input.setAttribute('for', labelData.name);
           input.innerText = labelData.label;
           input.style.marginBottom = '5px';
           return input;
-        } else {
+        }else {
           input = document.createElement('label');
           input.style.display = 'none';
           return input;
@@ -87,13 +78,12 @@
 
           inputData.value.forEach(function (item, i) {
             var option = document.createElement('option');
-            option.setAttribute('value', `value ${[i+1]}`);
+            option.setAttribute('value', `value ${[i + 1]}`);
             option.innerText = inputData.value[i];
             input.insertAdjacentElement("afterbegin", option);
           });
           return input;
-
-        }else {
+        } else {
           input = document.createElement('input');
           input.setAttribute('type', inputData.elemtype);
           input.setAttribute('name', inputData.name);
@@ -103,15 +93,36 @@
         }
       }
 
-/*      function createValue(input, inputData){
-        for (var i = 0; i < inputData.value.length; i++){
-          input = document.createElement('option');
-          input.setAttribute('value', value[i]);
-          input.innerText = inputData.value;
-          input.insertAdjacentElement("afterbegin", input);
-        }
-      }*/
+      function addArrLabel(obj, form) {
+        createTitle(obj, form);
+        for (var i = 0; i < obj.label.length; i++) {
+          var input = createInput(obj)
+          form.appendChild(input);
 
+          var label = document.createElement('label');
+          label.setAttribute('for', obj.name);
+          label.innerText = obj.label[i];
+          label.style.marginBottom = '5px';
+          form.appendChild(label);
+        }
+      }
+
+      function createTitle(titleData, tagInForm) {
+        var paragrapf = document.createElement('p');
+        paragrapf.innerText = titleData.title;
+        paragrapf.style.display = 'inline-block';
+        paragrapf.style.margin = '0';
+        tagInForm.insertAdjacentElement('beforeend', paragrapf);
+      }
+
+      function createTeatArea(titleData, tagInForm){
+        createTitle(titleData, tagInForm);
+        addBr(tagInForm);
+        var textarea = document.createElement('textarea');
+        textarea.style.width = titleData.width;
+        textarea.style.height = titleData.height;
+        tagInForm.insertAdjacentElement('beforeend', textarea);
+      }
     </script>
   </body>
 </html>
