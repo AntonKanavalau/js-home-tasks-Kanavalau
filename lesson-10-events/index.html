@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+  </head>
+  <body>
+    <form action="" name="NameForm"></form>
+    <script>
+      var formElements = [
+        {label: 'Разработчики:', elemtype:'text', name:'author', width:'435px'},
+        {label: 'Название сайта:', elemtype:'text', name:'title', width:'435px'},
+        {label: 'URL сайта:', elemtype:'text', name:'title', width:'300px'},
+        {label: 'Дата запуска сайта:', elemtype:'text', name:'startdate', width:'80px'},
+        {label: 'Посетителей в сутки:', elemtype:'text', name:'persons', width:'80px'},
+        {label: 'E-mail для связи:', elemtype:'text', name:'title', width:'435px'},
+        {label: 'Рубрика каталога:', elemtype:'select', name:'rubric', width:'204px',
+          value:['здоровье', 'домашний уют', 'бытовая техника']},
+        {title: 'Размещение:', label:['бесплатное', 'платное', 'VIP'], elemtype:'radio', name:'public'},
+        {label: 'Разрешить отзывы:', elemtype:'checkbox', name:'comments'},
+        {title: 'Описание сайта:', elemtype:'textarea', name:'article', width:'610px', height:'168px'},
+        {label: 'Опубликовать:', elemtype:'submit', value:'Опубликовать'},
+      ];
+
+      console.log(formElements);
+      console.log(typeof formElements[7].label);
+
+      createForm('NameForm', formElements);
+
+      function createForm(fName, fElements) {
+        var form = document.forms[fName];
+
+        addLabel(fElements);
+
+        function addLabel(fElements) {
+          for (var i = 0; i < fElements.length; i++) {
+            if (typeof fElements[i].label === 'string') {
+              var label = createLabel(fElements[i]);
+              form.appendChild(label);
+
+              var input = createInput(fElements[i])
+              form.appendChild(input);
+              addBr(form)
+            } /*else {
+              obj = fElements[i].label;
+              for (var j = 0; j < obj.length; j++) {
+                label = createLabel(obj[j]);
+                form.appendChild(label);
+
+                addBr(form);
+
+
+              }
+              console.log(obj);
+            }*/
+          }
+        }
+      }
+
+      function addBr(tagInForm) {
+          var br = document.createElement('br');
+          tagInForm.insertAdjacentElement('beforeend', br);
+      }
+
+      function createLabel(labelData) {
+        if (labelData.elemtype !== 'submit'){
+          var input = document.createElement('label');
+          input.setAttribute('for', labelData.elemtype);
+          input.innerText = labelData.label;
+          input.style.marginBottom = '5px';
+          return input;
+        } else {
+          input = document.createElement('label');
+          input.style.display = 'none';
+          return input;
+        }
+      }
+
+      function createInput(inputData) {
+        var input
+        if (inputData.elemtype === 'select') {
+          input = document.createElement('select');
+          input.setAttribute('type', inputData.elemtype);
+          input.setAttribute('name', inputData.name);
+          input.style.width = inputData.width;
+          input.style.marginBottom = '5px';
+
+          inputData.value.forEach(function (item, i) {
+            var option = document.createElement('option');
+            option.setAttribute('value', `value ${[i+1]}`);
+            option.innerText = inputData.value[i];
+            input.insertAdjacentElement("afterbegin", option);
+          });
+          return input;
+
+        }else {
+          input = document.createElement('input');
+          input.setAttribute('type', inputData.elemtype);
+          input.setAttribute('name', inputData.name);
+          input.style.width = inputData.width;
+          input.style.marginBottom = '5px';
+          return input;
+        }
+      }
+
+/*      function createValue(input, inputData){
+        for (var i = 0; i < inputData.value.length; i++){
+          input = document.createElement('option');
+          input.setAttribute('value', value[i]);
+          input.innerText = inputData.value;
+          input.insertAdjacentElement("afterbegin", input);
+        }
+      }*/
+
+    </script>
+  </body>
+</html>
