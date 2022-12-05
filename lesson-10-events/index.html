@@ -18,7 +18,7 @@
           value:['здоровье', 'домашний уют', 'бытовая техника']},
         {title: 'Размещение:', label:['бесплатное', 'платное', 'VIP'], elemtype:'radio', name:'public'},
         {label: 'Разрешить отзывы:', elemtype:'checkbox', name:'comments'},
-        {title: 'Описание сайта:', elemtype:'textarea', name:'article', width:'610px', height:'168px'},
+        {label: 'Описание сайта:', elemtype:'textarea', name:'article', width:'610px', height:'168px'},
         {label: 'Опубликовать:', elemtype:'submit', value:'Опубликовать'},
       ];
 
@@ -30,15 +30,20 @@
         addElementsForm(fElements, form);
       }
 
+      /*Точно можно улучшить... Вопрос только, в каком направлении думать?
+      Большая привязка к массиву объектов.
+      Нужно стандартизировать формат объектов.*/
       function addElementsForm(elements, form) {
         for (var i = 0; i < elements.length; i++) {
-          if (typeof elements[i].label === 'string') {
+          if (typeof elements[i].label === 'string' && elements[i].elemtype !== 'textarea') {
             var label = createLabel(elements[i]);
             form.appendChild(label);
             var input = createInput(elements[i])
             form.appendChild(input);
             addBr(form);
-          }else if(elements[i].label === undefined){
+          }else if(typeof elements[i].label === 'string' && elements[i].elemtype === 'textarea'){
+            label = createLabel(elements[i]);
+            form.appendChild(label);
             createTeatArea(elements[i], form);
             addBr(form);
           }else if (Array.isArray(elements[i].label)) {
@@ -55,15 +60,15 @@
 
       function createLabel(labelData) {
         if (labelData.elemtype !== 'submit') {
-          var input = document.createElement('label');
-          input.setAttribute('for', labelData.name);
-          input.innerText = labelData.label;
-          input.style.marginBottom = '5px';
-          return input;
+          var label = document.createElement('label');
+          label.setAttribute('for', labelData.name);
+          label.innerText = labelData.label;
+          label.style.marginBottom = '5px';
+          return label;
         }else {
-          input = document.createElement('label');
-          input.style.display = 'none';
-          return input;
+          label = document.createElement('label');
+          label.style.display = 'none';
+          return label;
         }
       }
 
@@ -80,7 +85,7 @@
             var option = document.createElement('option');
             option.setAttribute('value', `value ${[i + 1]}`);
             option.innerText = inputData.value[i];
-            input.insertAdjacentElement("afterbegin", option);
+            input.insertAdjacentElement("beforeend", option);
           });
           return input;
         } else {
@@ -116,7 +121,6 @@
       }
 
       function createTeatArea(titleData, tagInForm){
-        createTitle(titleData, tagInForm);
         addBr(tagInForm);
         var textarea = document.createElement('textarea');
         textarea.style.width = titleData.width;
