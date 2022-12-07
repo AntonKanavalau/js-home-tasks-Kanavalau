@@ -14,9 +14,11 @@ addIMGStyle(arrIMG);
 //Добавили стили для div
 function addDivStyle(block) {
   block.style.height = '800px'
+  block.style.width = '1000px'
   block.style.borderRadius = '10px';
   block.style.border = 'solid 1px black';
-    block.style.position = 'relative';
+  block.style.position = 'relative';
+  block.addEventListener('mousemove', checkMouse, false)
   /*  block.setAttribute('ondrop', 'DivDrop(event,this)');
     block.setAttribute('ondragover', 'DivDragOver(event)');*/
 }
@@ -29,45 +31,76 @@ function addIMGStyle(char) {
     char[i].style.position = 'absolute';
     char[i].style.left = `${char[i].width * i}px`;
     char[i].addEventListener('mousedown', Drag_Start, false)
-    /*    char[i].setAttribute('ondragstart', 'CoonDragStart(event)');
-        char[i].setAttribute('ondragstart', 'CoonDragEnd(event)');*/
   }
+}
+
+//Координаты мыши в блоке
+var mouseX;
+var mouseY;
+
+function checkMouse(event) {
+  mouseX = event.pageX - divContainer.offsetTop;
+  mouseY = event.pageY - divContainer.offsetLeft;
 }
 
 function Drag_Start(EO) {
   EO = EO || window.event;
   //Записали в глоб.переменную кликнутый элемент
   DragImage = EO.target;
-  //Координаты mousedown относительно всего монитора
-  var clickX = EO.screenX;
-  var clickY = EO.screenY;
-
-  //Координаты IMG относительно DIV
-  var targetImgX = DragImage.offsetLeft;
-  var targetImgY = DragImage.offsetTop;
 
   //Записали в глоб.переменные координаты кликнутого элемента
-  DragShiftX = clickX - targetImgX;
-  DragShiftY = clickY - targetImgY;
-
-  console.log(EO);
-  console.log(DragImage);
-  console.log(clickX);
-  console.log(clickY);
-  console.log('----------------------');
-  console.log(targetImgX);
-  console.log(targetImgY);
+  DragShiftX = mouseX - DragImage.offsetLeft;
+  DragShiftY = mouseY - DragImage.offsetTop;
+  console.log('Drag_Start');
+  console.log(mouseX);
+  console.log(mouseY);
   console.log('----------------------');
   console.log(DragShiftX);
   console.log(DragShiftY);
+  console.log('----------------------');
+  /*DragImage.removeEventListener('mousedown', Drag_Start, false);*/
+  /*DragImage.addEventListener('mousemove', Drag_Move, false);*/
+  DragImage.addEventListener('mouseup', Drag_Stop, false);
 }
 
-function Drag_Move(){
+/*function Drag_Move(DragImage) {
+  DragShiftX = mouseX- DragImage.offsetLeft;
+  DragShiftY = mouseX - DragImage.offsetTop;
+
+
+ /!*DragImage.removeEventListener('mousemove', Drag_Move, false);*!/
+  DragImage.addEventListener('mouseup', Drag_Stop, false);
+
+  console.log(DragShiftX);
+  console.log(DragShiftY);
+}*/
+
+
+function Drag_Stop(EO) {
+  DragShiftX = mouseX - DragImage.offsetLeft;
+  DragShiftY = mouseY - DragImage.offsetTop;
+
+  console.log('Drag_Stop');
+  console.log(mouseX);
+  console.log(mouseY);
+  console.log('----------------------');
+  console.log(DragShiftX);
+  console.log(DragShiftY);
+  console.log('----------------------');
+
+/*  console.log(mouseX);
+  console.log(mouseY);
+  console.log('----------------------');
+  console.log(DragShiftX);
+  console.log(DragShiftY);*/
+
+  DragImage.removeEventListener('mouseup', Drag_Stop, false);
+/*  DragImage.removeEventListener('mousemove', Drag_Move, false);*/
+  DragImage.removeEventListener('mousedown', Drag_Start, false);
+
+  DragImage.addEventListener('mousedown', Drag_Start, false);
+
 
 }
 
-
-function Drag_Stop(){
-
-}
 
