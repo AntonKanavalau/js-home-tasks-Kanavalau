@@ -7,7 +7,6 @@ var DragImage = null; // какая картинка сейчас перетас
 var DragShiftX = 0;
 var DragShiftY = 0;
 
-
 addDivStyle(divContainer);
 addIMGStyle(arrIMG);
 
@@ -30,9 +29,13 @@ function addIMGStyle(char) {
     char[i].style.width = '150px';
     char[i].style.position = 'absolute';
     char[i].style.left = `${char[i].width * i}px`;
+    char[i].style.top = '0px';
     char[i].addEventListener('mousedown', Drag_Start, false)
   }
 }
+
+//Кидаем слушателя на окно браузера
+window.addEventListener('mousemove', checkMouse);
 
 //Координаты мыши в блоке
 var mouseX;
@@ -57,36 +60,38 @@ function Drag_Start(EO) {
   console.log('----------------------');
   console.log(DragShiftX);
   console.log(DragShiftY);
-  console.log('----------------------');
+
   /*DragImage.removeEventListener('mousedown', Drag_Start, false);*/
-  /*DragImage.addEventListener('mousemove', Drag_Move, false);*/
+  DragImage.addEventListener('mousemove', Drag_Move, false);
   DragImage.addEventListener('mouseup', Drag_Stop, false);
 }
 
-/*function Drag_Move(DragImage) {
+function Drag_Move(DragImage) {
   DragShiftX = mouseX- DragImage.offsetLeft;
   DragShiftY = mouseX - DragImage.offsetTop;
 
 
- /!*DragImage.removeEventListener('mousemove', Drag_Move, false);*!/
+ /*DragImage.removeEventListener('mousemove', Drag_Move, false);*/
   DragImage.addEventListener('mouseup', Drag_Stop, false);
 
   console.log(DragShiftX);
   console.log(DragShiftY);
-}*/
+}
 
 
 function Drag_Stop(EO) {
-  DragShiftX = mouseX - DragImage.offsetLeft;
-  DragShiftY = mouseY - DragImage.offsetTop;
+  DragShiftX = 0;
+  DragShiftY = 0;
 
-  console.log('Drag_Stop');
-  console.log(mouseX);
+ console.log('Drag_Stop');
+  console.log(DragShiftX);
+  console.log(DragShiftY);
+ /*  console.log(mouseX);
   console.log(mouseY);
   console.log('----------------------');
   console.log(DragShiftX);
   console.log(DragShiftY);
-  console.log('----------------------');
+  console.log('----------------------');*/
 
 /*  console.log(mouseX);
   console.log(mouseY);
