@@ -3,23 +3,16 @@
 var divContainer = document.getElementById('container');
 var arrIMG = divContainer.getElementsByTagName('img');
 
-var DragImage = null; // какая картинка сейчас перетаскивается
-var DragShiftX = 0;
-var DragShiftY = 0;
-
 addDivStyle(divContainer);
 addIMGStyle(arrIMG);
 
+var DragImage = null; // какая картинка сейчас перетаскивается
+var DragShiftX;
+var DragShiftY;
+
 //Добавили стили для div
 function addDivStyle(block) {
-  block.style.height = '800px'
-  block.style.width = '1000px'
-  block.style.borderRadius = '10px';
-  block.style.border = 'solid 1px black';
   block.style.position = 'relative';
-  block.addEventListener('mousemove', checkMouse, false)
-  /*  block.setAttribute('ondrop', 'DivDrop(event,this)');
-    block.setAttribute('ondragover', 'DivDragOver(event)');*/
 }
 
 //Добавили стили для картинок
@@ -30,82 +23,54 @@ function addIMGStyle(char) {
     char[i].style.position = 'absolute';
     char[i].style.left = `${char[i].width * i}px`;
     char[i].style.top = '0px';
-    char[i].addEventListener('mousedown', Drag_Start, false)
+    char[i].addEventListener('mousedown', Drag_Start, false);
   }
-}
-
-//Кидаем слушателя на окно браузера
-window.addEventListener('mousemove', checkMouse);
-
-//Координаты мыши в блоке
-var mouseX;
-var mouseY;
-
-function checkMouse(event) {
-  mouseX = event.pageX - divContainer.offsetTop;
-  mouseY = event.pageY - divContainer.offsetLeft;
 }
 
 function Drag_Start(EO) {
   EO = EO || window.event;
+  EO.preventDefault();
+  console.log('Нажал');
+
   //Записали в глоб.переменную кликнутый элемент
   DragImage = EO.target;
+  DragImage.style.zIndex = '1';
+
+  //Шаманим с курсором
+  document.body.style.cursor = 'drop';
 
   //Записали в глоб.переменные координаты кликнутого элемента
-  DragShiftX = mouseX - DragImage.offsetLeft;
-  DragShiftY = mouseY - DragImage.offsetTop;
-  console.log('Drag_Start');
-  console.log(mouseX);
-  console.log(mouseY);
-  console.log('----------------------');
-  console.log(DragShiftX);
-  console.log(DragShiftY);
+  DragShiftX = EO.pageX - DragImage.offsetLeft;
+  DragShiftY = EO.pageY - DragImage.offsetTop;
 
-  /*DragImage.removeEventListener('mousedown', Drag_Start, false);*/
-  DragImage.addEventListener('mousemove', Drag_Move, false);
-  DragImage.addEventListener('mouseup', Drag_Stop, false);
+  divContainer.appendChild(DragImage);
+  window.addEventListener('mousemove', Drag_Move, false);
 }
 
-function Drag_Move(DragImage) {
-  DragShiftX = mouseX- DragImage.offsetLeft;
-  DragShiftY = mouseX - DragImage.offsetTop;
 
+function Drag_Move(EO) {
+  EO = EO || window.event;
+  EO.preventDefault();
+  console.log('Тащу');
 
- /*DragImage.removeEventListener('mousemove', Drag_Move, false);*/
-  DragImage.addEventListener('mouseup', Drag_Stop, false);
+  DragImage.style.left = (EO.pageX - DragShiftX) + 'px';
+  DragImage.style.top = (EO.pageY - DragShiftY) + 'px';
 
-  console.log(DragShiftX);
-  console.log(DragShiftY);
+  window.addEventListener('mouseup', Drag_Stop, false);
 }
-
 
 function Drag_Stop(EO) {
+  EO.preventDefault();
+  console.log('Отпустил');
+
+  window.removeEventListener('mousemove', Drag_Move, false);
+
+  DragImage.style.zIndex = null;
+  document.body.style.cursor = 'default';
+
+  DragImage = null;
   DragShiftX = 0;
   DragShiftY = 0;
-
- console.log('Drag_Stop');
-  console.log(DragShiftX);
-  console.log(DragShiftY);
- /*  console.log(mouseX);
-  console.log(mouseY);
-  console.log('----------------------');
-  console.log(DragShiftX);
-  console.log(DragShiftY);
-  console.log('----------------------');*/
-
-/*  console.log(mouseX);
-  console.log(mouseY);
-  console.log('----------------------');
-  console.log(DragShiftX);
-  console.log(DragShiftY);*/
-
-  DragImage.removeEventListener('mouseup', Drag_Stop, false);
-/*  DragImage.removeEventListener('mousemove', Drag_Move, false);*/
-  DragImage.removeEventListener('mousedown', Drag_Start, false);
-
-  DragImage.addEventListener('mousedown', Drag_Start, false);
-
-
 }
 
 
