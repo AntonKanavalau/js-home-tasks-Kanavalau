@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+  </head>
+  <body>
+    <form action="" name="NameForm"></form>
+    <script>
+      var formElements = [
+        {label: 'Разработчики:', elemtype:'text', name:'author', width:'435px'},
+        {label: 'Название сайта:', elemtype:'text', name:'title', width:'435px'},
+        {label: 'URL сайта:', elemtype:'text', name:'title', width:'300px'},
+        {label: 'Дата запуска сайта:', elemtype:'text', name:'startdate', width:'80px'},
+        {label: 'Посетителей в сутки:', elemtype:'text', name:'persons', width:'80px'},
+        {label: 'E-mail для связи:', elemtype:'text', name:'title', width:'435px'},
+        {label: 'Рубрика каталога:', elemtype:'select', name:'rubric', width:'204px',
+          value:['здоровье', 'домашний уют', 'бытовая техника']},
+        {title: 'Размещение:', label:['бесплатное', 'платное', 'VIP'], elemtype:'radio', name:'public'},
+        {label: 'Разрешить отзывы:', elemtype:'checkbox', name:'comments'},
+        {label: 'Описание сайта:', elemtype:'textarea', name:'article', width:'610px', height:'168px'},
+        {label: 'Опубликовать:', elemtype:'submit', value:'Опубликовать'},
+      ];
+
+      createForm('NameForm', formElements);
+
+      function createForm(fName, fElements) {
+        var form = document.forms[fName];
+
+        addElementsForm(fElements, form);
+      }
+
+      /*Точно можно улучшить... Вопрос только, в каком направлении думать?
+      Большая привязка к массиву объектов.
+      Нужно стандартизировать формат объектов.*/
+      function addElementsForm(elements, form) {
+        for (var i = 0; i < elements.length; i++) {
+          if (typeof elements[i].label === 'string' && elements[i].elemtype !== 'textarea') {
+            var label = createLabel(elements[i]);
+            form.appendChild(label);
+            var input = createInput(elements[i])
+            form.appendChild(input);
+            addBr(form);
+          }else if(typeof elements[i].label === 'string' && elements[i].elemtype === 'textarea'){
+            label = createLabel(elements[i]);
+            form.appendChild(label);
+            createTeatArea(elements[i], form);
+            addBr(form);
+          }else if (Array.isArray(elements[i].label)) {
+            addArrLabel(elements[i], form);
+            addBr(form);
+          }
+        }
+      }
+
+      function addBr(tagInForm) {
+        var br = document.createElement('br');
+        tagInForm.insertAdjacentElement('beforeend', br);
+      }
+
+      function createLabel(labelData) {
+        if (labelData.elemtype !== 'submit') {
+          var label = document.createElement('label');
+          label.setAttribute('for', labelData.name);
+          label.innerText = labelData.label;
+          label.style.marginBottom = '5px';
+          return label;
+        }else {
+          label = document.createElement('label');
+          label.style.display = 'none';
+          return label;
+        }
+      }
+
+      function createInput(inputData) {
+        var input
+        if (inputData.elemtype === 'select') {
+          input = document.createElement('select');
+          input.setAttribute('type', inputData.elemtype);
+          input.setAttribute('name', inputData.name);
+          input.style.width = inputData.width;
+          input.style.marginBottom = '5px';
+
+          inputData.value.forEach(function (item, i) {
+            var option = document.createElement('option');
+            option.setAttribute('value', `value ${[i + 1]}`);
+            option.innerText = inputData.value[i];
+            input.insertAdjacentElement("beforeend", option);
+          });
+          return input;
+        } else {
+          input = document.createElement('input');
+          input.setAttribute('type', inputData.elemtype);
+          input.setAttribute('name', inputData.name);
+          input.style.width = inputData.width;
+          input.style.marginBottom = '5px';
+          return input;
+        }
+      }
+
+      function addArrLabel(obj, form) {
+        createTitle(obj, form);
+        for (var i = 0; i < obj.label.length; i++) {
+          var input = createInput(obj)
+          form.appendChild(input);
+
+          var label = document.createElement('label');
+          label.setAttribute('for', obj.name);
+          label.innerText = obj.label[i];
+          label.style.marginBottom = '5px';
+          form.appendChild(label);
+        }
+      }
+
+      function createTitle(titleData, tagInForm) {
+        var paragrapf = document.createElement('p');
+        paragrapf.innerText = titleData.title;
+        paragrapf.style.display = 'inline-block';
+        paragrapf.style.margin = '0';
+        tagInForm.insertAdjacentElement('beforeend', paragrapf);
+      }
+
+      function createTeatArea(titleData, tagInForm){
+        addBr(tagInForm);
+        var textarea = document.createElement('textarea');
+        textarea.style.width = titleData.width;
+        textarea.style.height = titleData.height;
+        tagInForm.insertAdjacentElement('beforeend', textarea);
+      }
+    </script>
+  </body>
+</html>
