@@ -1,8 +1,7 @@
 'use strict';
 
-
-var radius = 700;
-var percent = 50;
+var radius = 700; //Часто используемое значение, от которого опираемся для создания объектов (размер часов)
+var percent = 50; //Используем в отступах и позиции
 
 document.body.style.margin = '0px'
 //Header block
@@ -31,13 +30,6 @@ divBG2.style.filter = 'blur(15px)';
 divBG2.style.borderRadius = percent + '%';
 alignCenter(divBG2);
 divBG1.insertAdjacentElement('afterbegin', divBG2);
-
-function alignCenter(char) {
-  char.style.position = 'absolute';
-  char.style.top = percent + '%';
-  char.style.left = percent + '%';
-  char.style.transform = 'translate(-50%, -50%)';
-}
 
 //create numbers
 createNumbers();
@@ -106,43 +98,111 @@ alignCenter(arrowDot);
 
 arrows.insertAdjacentElement('afterbegin', arrowDot);
 
+//Add hour arrow
+var hourArrow = document.createElement('div');
+hourArrow.id = 'hourArrow';
+hourArrow.style.backgroundColor = '#FF0000';
+hourArrow.style.height = radius / 4 + 'px';
+hourArrow.style.width = radius / 30 + 'px';
+createArrows(hourArrow);
+
 //Add minute arrow
 var minuteArrow = document.createElement('div');
+minuteArrow.id = 'minuteArrow';
 minuteArrow.style.backgroundColor = 'black';
-minuteArrow.style.width = radius / 2.5 + 'px';
-minuteArrow.style.height = radius / 30 + 'px';
-minuteArrow.style.transformOrigin = 'left';
-minuteArrow.style.position = 'absolute';
-minuteArrow.style.top = percent + '%';
-minuteArrow.style.left = percent + '%';
-minuteArrow.style.transform = 'translate(0, -50%)';
-minuteArrow.style.borderRadius = percent/5 + 'px';
-arrows.insertAdjacentElement('afterbegin', minuteArrow);
+minuteArrow.style.height = radius / 2.5 + 'px';
+minuteArrow.style.width = radius / 30 + 'px';
+createArrows(minuteArrow);
 
 //Add second arrow
 var secondArrow = document.createElement('div');
+secondArrow.id = 'secondArrow';
 secondArrow.style.backgroundColor = '#009EFF';
-secondArrow.style.width = radius / 2.25 + 'px';
-secondArrow.style.height = radius / 80 + 'px';
-secondArrow.style.transformOrigin = 'left';
-secondArrow.style.position = 'absolute';
-secondArrow.style.top = percent + '%';
-secondArrow.style.left = percent + '%';
-secondArrow.style.rotate = '45deg';
-secondArrow.style.transform = 'translate(0, -50%)';
-secondArrow.style.borderRadius = percent/5 + 'px';
-arrows.insertAdjacentElement('afterbegin', secondArrow);
+secondArrow.style.height = radius / 2.25 + 'px';
+secondArrow.style.width = radius / 80 + 'px';
 
-//Add hour arrow
-var hourArrow = document.createElement('div');
-hourArrow.style.backgroundColor = '#FF0000';
-hourArrow.style.width = radius / 4 + 'px';
-hourArrow.style.height = radius / 30 + 'px';
-hourArrow.style.transformOrigin = 'left';
-hourArrow.style.position = 'absolute';
-hourArrow.style.top = percent + '%';
-hourArrow.style.left = percent + '%';
-hourArrow.style.rotate = '30deg';
-hourArrow.style.transform = 'translate(0, -50%)';
-hourArrow.style.borderRadius = percent/5 + 'px';
-arrows.insertAdjacentElement('afterbegin', hourArrow);
+
+/*secondArrow.style.transformOrigin = 'right center';*/
+
+arrows.insertAdjacentElement('afterbegin', secondArrow);
+createArrows(secondArrow);
+
+function alignCenter(char) {
+  char.style.position = 'absolute';
+  char.style.top = percent + '%';
+  char.style.left = percent + '%';
+  char.style.transform = 'translate(-50%, -50%)';
+}
+
+function createArrows(char) {
+  char.style.transformOrigin = '0 0';
+  char.style.position = 'absolute';
+  char.style.top = percent + '%';
+  char.style.left = percent + '%';
+  char.style.transform = 'translate(-50%, -100%)';
+  char.style.rotate = '0deg';
+  char.style.borderRadius = percent / 5 + 'px';
+  arrows.insertAdjacentElement('afterbegin', char);
+}
+
+//Панелька анлоговых часов
+var analogWatchBlock = document.createElement('div');
+analogWatchBlock.id = 'analogWatchBlock';
+analogWatchBlock.style.zIndex = '2';
+analogWatchBlock.style.backgroundColor = '#FFEEA9';
+analogWatchBlock.style.padding = `${radius/28}px ${radius/14}px`;
+analogWatchBlock.style.position = 'absolute';
+analogWatchBlock.style.top = percent * 1.2 + '%';
+analogWatchBlock.style.left = percent + '%';
+analogWatchBlock.style.transform = 'translate(-50%, -50%)';
+analogWatchBlock.style.borderRadius = percent / 5 + 'px';
+analogWatchBlock.style.fontSize = radius / 10 / 1.5 + 'px';
+watchContainer.insertAdjacentElement('afterbegin', analogWatchBlock);
+
+//Работаем с временем
+setInterval(UpdateTime, 1000);
+
+function UpdateTime() {
+  var CurrTime = new Date();
+  var CurrTimeStr = FormatDateTime(CurrTime);
+
+  //Механические
+  second(CurrTime);
+/*  minute(CurrTime);
+  hour(CurrTime);*/
+
+  //Аналоговые часы
+  document.getElementById('analogWatchBlock').innerHTML = CurrTimeStr;
+}
+
+function FormatDateTime(DT) {
+  var Hours = DT.getHours();
+  var Minutes = DT.getMinutes();
+  var Seconds = DT.getSeconds();
+  return Str0L(Hours, 2) + ':' + Str0L(Minutes, 2) + ':' + Str0L(Seconds, 2);
+}
+
+function Str0L(Val, Len) {
+  var StrVal = Val.toString();
+  while (StrVal.length < Len)
+    StrVal = '0' + StrVal;
+  return StrVal;
+}
+
+function second(DT){
+  var Seconds = DT.getSeconds();
+  var secondArrow = document.getElementById('secondArrow');
+  secondArrow.style.rotate = Seconds*6 +'deg';
+}
+
+function minute(DT){
+  var Minutes = DT.getSeconds();
+  var MinutesArrow = document.getElementById('minuteArrow');
+  MinutesArrow.style.rotate = Minutes*6 +'deg';
+}
+
+function hour(DT){
+  var Hours = DT.getSeconds();
+  var HoursArrow = document.getElementById('hourArrow');
+  HoursArrow.style.rotate = Hours*6 +'deg';
+}
