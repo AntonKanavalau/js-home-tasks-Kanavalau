@@ -168,8 +168,8 @@ function UpdateTime() {
 
   //Механические
   second(CurrTime);
-/*  minute(CurrTime);
-  hour(CurrTime);*/
+  minute(CurrTime);
+  hour(CurrTime);
 
   //Аналоговые часы
   document.getElementById('analogWatchBlock').innerHTML = CurrTimeStr;
@@ -196,13 +196,13 @@ function second(DT){
 }
 
 function minute(DT){
-  var Minutes = DT.getSeconds();
+  var Minutes = DT.getMinutes();
   var MinutesArrow = document.getElementById('minuteArrow');
   MinutesArrow.style.rotate = Minutes*6 +'deg';
 }
 
 function hour(DT){
-  var Hours = DT.getSeconds();
+  var Hours = DT.getHours();
   var HoursArrow = document.getElementById('hourArrow');
   HoursArrow.style.rotate = Hours*6 +'deg';
 }
