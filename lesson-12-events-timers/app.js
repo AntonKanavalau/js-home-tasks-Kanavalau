@@ -150,7 +150,7 @@ var analogWatchBlock = document.createElement('div');
 analogWatchBlock.id = 'analogWatchBlock';
 analogWatchBlock.style.zIndex = '2';
 analogWatchBlock.style.backgroundColor = '#FFEEA9';
-analogWatchBlock.style.padding = `${radius/28}px ${radius/14}px`;
+analogWatchBlock.style.padding = `${radius / 28}px ${radius / 14}px`;
 analogWatchBlock.style.position = 'absolute';
 analogWatchBlock.style.top = percent * 1.2 + '%';
 analogWatchBlock.style.left = percent + '%';
@@ -167,9 +167,9 @@ function UpdateTime() {
   var CurrTimeStr = FormatDateTime(CurrTime);
 
   //Механические
-  second(CurrTime);
-  minute(CurrTime);
-  hour(CurrTime);
+  analogTime(CurrTime);
+  /*  minute(CurrTime);
+    hour(CurrTime);*/
 
   //Аналоговые часы
   document.getElementById('analogWatchBlock').innerHTML = CurrTimeStr;
@@ -189,6 +189,7 @@ function Str0L(Val, Len) {
   return StrVal;
 }
 
+/* Да это работает, но можно и приятней =)
 function second(DT){
   var Seconds = DT.getSeconds();
   var secondArrow = document.getElementById('secondArrow');
@@ -204,5 +205,23 @@ function minute(DT){
 function hour(DT){
   var Hours = DT.getHours();
   var HoursArrow = document.getElementById('hourArrow');
-  HoursArrow.style.rotate = Hours*6 +'deg';
+  HoursArrow.style.rotate = Hours*3600/360*3 +'deg';
+/!*  Из часов получаем секунды, делим их на весь круг и умножаем на 3
+  (предполагалось, что на 30 градусов, мол за час он должен 30 градусов повернуть, но ноль лишний, поэтому 3)
+  получил опытным путем и оно работает!!!!!*!/
+}*/
+
+//Приятней ^^
+function analogTime(DT) {
+  var Seconds = DT.getSeconds();
+  var Minutes = DT.getMinutes();
+  var Hours = DT.getHours();
+  var secondArrow = document.getElementById('secondArrow');
+  var MinutesArrow = document.getElementById('minuteArrow');
+  var HoursArrow = document.getElementById('hourArrow');
+  
+  //Корректнее если все переводить в единую систему единиц
+  secondArrow.style.rotate = Seconds * 6 + 'deg';
+  MinutesArrow.style.rotate = ((Minutes * 60) + Seconds) / 60 * 6 + 'deg';
+  HoursArrow.style.rotate = (((Hours * 60) + (Minutes * 60)) + Seconds) / 3600 * 6 + 'deg';
 }
