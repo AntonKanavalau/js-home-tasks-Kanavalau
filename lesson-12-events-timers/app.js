@@ -222,6 +222,8 @@ function analogTime(DT) {
   
   //Корректнее если все переводить в единую систему единиц
   secondArrow.style.rotate = Seconds * 6 + 'deg';
+  /*А тут просто 60, но тут мы возвращаемся к минутам*/
   MinutesArrow.style.rotate = ((Minutes * 60) + Seconds) / 60 * 6 + 'deg';
-  HoursArrow.style.rotate = (((Hours * 60) + (Minutes * 60)) + Seconds) / 3600 * 6 + 'deg';
+  /*Почему тут 360 и 3?!*/
+  HoursArrow.style.rotate = ((Hours * 3600) + (Minutes * 60) + Seconds) / 360 * 3 + 'deg';
 }
