@@ -1,9 +1,7 @@
 'use strict';
 
 var radius = 700; //Часто используемое значение, от которого опираемся для создания объектов (размер часов)
-var percent = 50; //Используем в отступах и позиции
-
-var center = `${radius / 2}`;
+var center = `${radius / 2}`;//Центр часов
 
 document.body.style.margin = '0px';
 var ns = 'http://www.w3.org/2000/svg';
@@ -24,7 +22,7 @@ BG1.setAttribute('r', center);
 BG1.setAttribute('fill', '#FFCCEE');
 svgBlock.appendChild(BG1);
 
-//Filter
+//Filter blur
 var filter = document.createElementNS(ns, 'filter');
 filter.id = 'blur';
 svgBlock.insertAdjacentElement('afterbegin', filter);
@@ -42,58 +40,137 @@ BG2.setAttribute('fill', 'rgb(223 254 255 / 22%)');
 BG2.setAttribute('filter', 'url(#blur)');
 svgBlock.appendChild(BG2);
 
-//Create numbers
-/*for (var i = 0; i < 12; i++) {
-  var numberBG = document.createElementNS(ns, 'circle');
-  numberBG.setAttribute('cx', center);
-  numberBG.setAttribute('cy', center);
-  numberBG.setAttribute('r', `${center / 5}`);
+//Create BG for numbers and numbers
+var groupBG = document.createElementNS(ns, 'g');
+groupBG.id = 'numberBG-group'
+svgBlock.appendChild(groupBG);
 
-  var radiusOut = radius / 2.5;
-  var angle = (30 * (i + 1)) / 180 * Math.PI;
+var groupNumber = document.createElementNS(ns, 'g');
+groupNumber.id = 'number-group'
+svgBlock.appendChild(groupNumber);
 
-  var numberDivCenterX = watchCenterX + radiusOut * Math.sin(angle);
-  var numberDivCenterY = watchCenterY - radiusOut * Math.cos(angle);
-
-  numberBG.style.left = Math.round(numberDivCenterX - numberDiv.offsetWidth / 2) + 'px';
-  numberBG.style.top = Math.round(numberDivCenterY - numberDiv.offsetHeight / 2) + 'px';
-}*/
-var group = document.createElementNS(ns, 'g');
-svgBlock.appendChild(group);
-
-var numberBG = document.createElementNS(ns, 'circle');
-numberBG.setAttribute('cx', center);
-numberBG.setAttribute('cy', center / 5);
-numberBG.setAttribute('r', `${center / 7}`);
-numberBG.setAttribute('fill', 'rgb(78 78 78 / 40%)');
-group.appendChild(numberBG);
-
-
-/*
 for (var i = 0; i < 12; i++) {
+  //create BG
   var numberBG = document.createElementNS(ns, 'circle');
   numberBG.setAttribute('cx', center);
   numberBG.setAttribute('cy', center / 5);
   numberBG.setAttribute('r', `${center / 7}`);
   numberBG.setAttribute('fill', 'rgb(78 78 78 / 40%)');
 
-  var radiusOut = radius / 10;
-  var angle = (30 * (i + 1)) / 180 * Math.PI;
+  var angle = 30 * (i + 1);//угол
 
-  var watchCenterX = center;
-  var watchCenterY = center;
+  numberBG.setAttribute("transform", `rotate(${angle} ${center} ${center})`);
+  groupBG.appendChild(numberBG);
 
-  var numberDivCenterX = watchCenterX + radiusOut * Math.sin(angle);
-  var numberDivCenterY = watchCenterY - radiusOut * Math.cos(angle);
+  //create Numbers
+  var number = document.createElementNS(ns, 'text');
+  number.setAttribute('x', center);
+  number.setAttribute('y', center / 4.25);
+  number.setAttribute('fill', 'white');
+  number.style.fontSize = radius / 15 + 'px';
+  number.setAttribute('text-anchor', 'middle ');
+  number.innerHTML = `${i + 1}`;
 
-  var positionX = Math.round(numberDivCenterX - numberDiv.offsetWidth / 2);
-  var positionY = Math.round(numberDivCenterY - numberDiv.offsetHeight / 2);
-
-  numberBG.setAttribute('cx', positionX);
-  numberBG.setAttribute('cy', positionY);
-
-  group.appendChild(numberBG);
+  number.setAttribute("transform", `rotate(${angle} ${center} ${center}) rotate(${-angle} ${center} ${center / 5.15})`);
+  groupNumber.appendChild(number);
 }
-*/
+
+//Add arows elements
+var groupArrows = document.createElementNS(ns, 'g');
+groupArrows.id = 'arrowsElem-group'
+svgBlock.appendChild(groupArrows);
+
+//Center arrows
+var xP = center;
+var yP = center - center / 30;
+
+//Add minute arrow
+var minuteArrow = document.createElementNS(ns, 'rect');
+minuteArrow.id = 'minuteArrow';
+minuteArrow.setAttribute('width', center / 1.35);
+minuteArrow.setAttribute('height', center / 15);
+minuteArrow.setAttribute('x', center);
+minuteArrow.setAttribute('y', center - center / 30);
+minuteArrow.setAttribute('rx', center / 25 + 'px');
+minuteArrow.setAttribute('ry', center / 25 + 'px');
+minuteArrow.setAttribute('fill', 'black');
+groupArrows.appendChild(minuteArrow);
+
+//Add hour arrow
+var hourArrow = document.createElementNS(ns, 'rect');
+hourArrow.id = 'hourArrow';
+hourArrow.setAttribute('width', center / 2);
+hourArrow.setAttribute('height', center / 15);
+hourArrow.setAttribute('x', center);
+hourArrow.setAttribute('y', center - center / 30);
+hourArrow.setAttribute('rx', center / 25 + 'px');
+hourArrow.setAttribute('ry', center / 25 + 'px');
+hourArrow.setAttribute('fill', 'red');
+groupArrows.appendChild(hourArrow);
+
+//Add second arrow
+var secondArrow = document.createElementNS(ns, 'rect');
+secondArrow.id = 'secondArrow';
+secondArrow.setAttribute('width', center / 1.15);
+secondArrow.setAttribute('height', center / 30);
+secondArrow.setAttribute('x', center);
+secondArrow.setAttribute('y', center - center / 60);
+secondArrow.setAttribute('rx', center / 25 + 'px');
+secondArrow.setAttribute('ry', center / 25 + 'px');
+secondArrow.setAttribute('fill', '#009EFF');
+groupArrows.appendChild(secondArrow);
+
+//Add arrow dot
+var arrowDot = document.createElementNS(ns, 'circle');
+arrowDot.setAttribute('cx', center);
+arrowDot.setAttribute('cy', center);
+arrowDot.setAttribute('r', `${center / 15}`);
+arrowDot.setAttribute('fill', 'black');
+groupArrows.appendChild(arrowDot);
+
+//Панелька электронных часов
 
 
+//Работаем с временем
+setInterval(UpdateTime, 1000);
+
+function UpdateTime() {
+  var CurrTime = new Date();
+  var CurrTimeStr = FormatDateTime(CurrTime);
+
+  //Механические
+  analogTime(CurrTime);
+
+  //Аналоговые часы
+  document.getElementById('analogWatchBlock').innerHTML = CurrTimeStr;
+}
+
+function FormatDateTime(DT) {
+  var Hours = DT.getHours();
+  var Minutes = DT.getMinutes();
+  var Seconds = DT.getSeconds();
+  return Str0L(Hours, 2) + ':' + Str0L(Minutes, 2) + ':' + Str0L(Seconds, 2);
+}
+
+function Str0L(Val, Len) {
+  var StrVal = Val.toString();
+  while (StrVal.length < Len)
+    StrVal = '0' + StrVal;
+  return StrVal;
+}
+
+function analogTime(DT) {
+  var Seconds = DT.getSeconds();
+  var Minutes = DT.getMinutes();
+  var Hours = DT.getHours();
+
+  //Корректнее если все переводить в единую систему единиц
+  var secondArrowAngle = Seconds * 6;
+  secondArrow.setAttribute('transform', `rotate(${secondArrowAngle - 90} ${center} ${center})`);
+  /*А тут просто 60, но тут мы возвращаемся к минутам*/
+  var minutesArrowAngle = ((Minutes * 60) + Seconds) / 60 * 6;
+  minuteArrow.setAttribute('transform', `rotate(${minutesArrowAngle - 90} ${center} ${center})`);
+  /*Почему тут 360 и 3?!*/
+  var hoursArrowAngle = ((Hours * 3600) + (Minutes * 60) + Seconds) / 360 * 3;
+  hourArrow.setAttribute('transform', `rotate(${hoursArrowAngle - 90} ${center} ${center})`);
+}

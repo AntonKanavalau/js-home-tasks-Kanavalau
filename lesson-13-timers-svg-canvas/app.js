@@ -168,8 +168,6 @@ function UpdateTime() {
 
   //Механические
   analogTime(CurrTime);
-  /*  minute(CurrTime);
-    hour(CurrTime);*/
 
   //Аналоговые часы
   document.getElementById('analogWatchBlock').innerHTML = CurrTimeStr;
@@ -188,28 +186,6 @@ function Str0L(Val, Len) {
     StrVal = '0' + StrVal;
   return StrVal;
 }
-
-/* Да это работает, но можно и приятней =)
-function second(DT){
-  var Seconds = DT.getSeconds();
-  var secondArrow = document.getElementById('secondArrow');
-  secondArrow.style.rotate = Seconds*6 +'deg';
-}
-
-function minute(DT){
-  var Minutes = DT.getMinutes();
-  var MinutesArrow = document.getElementById('minuteArrow');
-  MinutesArrow.style.rotate = Minutes*6 +'deg';
-}
-
-function hour(DT){
-  var Hours = DT.getHours();
-  var HoursArrow = document.getElementById('hourArrow');
-  HoursArrow.style.rotate = Hours*3600/360*3 +'deg';
-/!*  Из часов получаем секунды, делим их на весь круг и умножаем на 3
-  (предполагалось, что на 30 градусов, мол за час он должен 30 градусов повернуть, но ноль лишний, поэтому 3)
-  получил опытным путем и оно работает!!!!!*!/
-}*/
 
 //Приятней ^^
 function analogTime(DT) {
