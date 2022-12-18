@@ -12,6 +12,10 @@ svgBlock.setAttribute('width', `${radius}`);
 svgBlock.setAttribute('height', `${radius}`);
 svgBlock.setAttribute('viewBox', '0 0 700 700');
 svgBlock.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+svgBlock.style.position = 'absolute'
+svgBlock.style.top = '50%';
+svgBlock.style.left = '50%';
+svgBlock.style.transform = 'translate(-50%, -50%)';
 document.body.insertAdjacentElement('afterbegin', svgBlock);
 
 //Create background 1
@@ -75,6 +79,31 @@ for (var i = 0; i < 12; i++) {
   groupNumber.appendChild(number);
 }
 
+//Add Analog elements
+var groupAnalog = document.createElementNS(ns, 'g');
+groupAnalog.id = 'groupAnalog-group'
+svgBlock.appendChild(groupAnalog);
+
+//Панелька электронных часов
+var analogWatchBlock = document.createElementNS(ns, 'rect');
+analogWatchBlock.setAttribute('width', center / 1.5);
+analogWatchBlock.setAttribute('height', center / 3.5);
+analogWatchBlock.setAttribute('x', center - center / 3);
+analogWatchBlock.setAttribute('y', center*1.15);
+analogWatchBlock.setAttribute('rx', center / 25 + 'px');
+analogWatchBlock.setAttribute('ry', center / 25 + 'px');
+analogWatchBlock.setAttribute('fill', '#FFEEA9');
+groupAnalog.appendChild(analogWatchBlock);
+
+//Create numbers into analogWatchBlock
+var analogWatchText = document.createElementNS(ns, 'text');
+analogWatchText.setAttribute('x', center);
+analogWatchText.setAttribute('y', center*1.325);
+analogWatchText.setAttribute('fill', 'black');
+analogWatchText.style.fontSize = radius / 15 + 'px';
+analogWatchText.setAttribute('text-anchor', 'middle ');
+groupAnalog.appendChild(analogWatchText);
+
 //Add arows elements
 var groupArrows = document.createElementNS(ns, 'g');
 groupArrows.id = 'arrowsElem-group'
@@ -128,8 +157,6 @@ arrowDot.setAttribute('r', `${center / 15}`);
 arrowDot.setAttribute('fill', 'black');
 groupArrows.appendChild(arrowDot);
 
-//Панелька электронных часов
-
 
 //Работаем с временем
 setInterval(UpdateTime, 1000);
@@ -142,7 +169,7 @@ function UpdateTime() {
   analogTime(CurrTime);
 
   //Аналоговые часы
-  document.getElementById('analogWatchBlock').innerHTML = CurrTimeStr;
+  analogWatchText.innerHTML = `${CurrTimeStr}`;
 }
 
 function FormatDateTime(DT) {
@@ -154,8 +181,7 @@ function FormatDateTime(DT) {
 
 function Str0L(Val, Len) {
   var StrVal = Val.toString();
-  while (StrVal.length < Len)
-    StrVal = '0' + StrVal;
+  while (StrVal.length < Len) StrVal = '0' + StrVal;
   return StrVal;
 }
 
@@ -164,13 +190,10 @@ function analogTime(DT) {
   var Minutes = DT.getMinutes();
   var Hours = DT.getHours();
 
-  //Корректнее если все переводить в единую систему единиц
   var secondArrowAngle = Seconds * 6;
   secondArrow.setAttribute('transform', `rotate(${secondArrowAngle - 90} ${center} ${center})`);
-  /*А тут просто 60, но тут мы возвращаемся к минутам*/
   var minutesArrowAngle = ((Minutes * 60) + Seconds) / 60 * 6;
   minuteArrow.setAttribute('transform', `rotate(${minutesArrowAngle - 90} ${center} ${center})`);
-  /*Почему тут 360 и 3?!*/
   var hoursArrowAngle = ((Hours * 3600) + (Minutes * 60) + Seconds) / 360 * 3;
   hourArrow.setAttribute('transform', `rotate(${hoursArrowAngle - 90} ${center} ${center})`);
 }
