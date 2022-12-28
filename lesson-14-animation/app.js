@@ -1,161 +1,251 @@
 'use strict';
 
-window.addEventListener('load', draw);
+//игровое поле
+var pinPongBlock = document.getElementById('pin-pongBlock');
+pinPongBlock.style.width = 600 + 'px';
+pinPongBlock.style.height = 400 + 'px';
+pinPongBlock.style.backgroundColor = '#ff00003b';
 
-function draw() {
-  /*document.body.style.margin = '0px';*/
-  var contentBlock = document.getElementById('pin-pongBlock');
-  //background
-  drawBG(contentBlock);
+// работаем с таймером
+requestAnimationFrame(tick);
 
-  //moves
-  /*setInterval(game, 40);*/
-  //characters
-  drawCharacter(characters);
-  //ball
-  drawBall();
+//работа со временем
+var settimeout;
+
+//Табло счета
+var score = document.createElement('div');
+var score1 = 0; //score first player
+var score2 = 0;//score second player;
+scoreInnerHTML();
+score = document.body.insertBefore(score, document.body.children[1]);
+
+//обновляем табло с очками
+function scoreInnerHTML() {
+  score.innerHTML = score1 + ":" + score2;
 }
 
-//draw background
-function drawBG(contentBlock) {
-  var BG = document.createElement('div');
-  BG.id = 'BG';
-  BG.style.width = 600 + 'px';
-  BG.style.height = 400 + 'px';
-  BG.style.position = 'relative';
-  BG.style.backgroundColor = '#ff00003b';
-  contentBlock.insertAdjacentElement('afterbegin', BG);
-}
+//Работа с ракетками
+var player1 = document.createElement('div'); //left player
+player1.style.width = '10px';
+player1.style.height = '100px';
+player1.style.position = 'absolute';
+player1.style.backgroundColor = '#9698F5';
+pinPongBlock.appendChild(player1);
 
-//Characters
-var p1 = new Character('#9698F5', 'translate(0, -50%)', 0); //left
-var p2 = new Character('#8b5409', 'translate(-100%, -50%)', 100);//right
+var player2 = document.createElement('div'); //second player
+player2.style.width = '10px';
+player2.style.height = '100px';
+player2.style.position = 'absolute';
+player2.style.backgroundColor = '#8b5409';
+pinPongBlock.appendChild(player2);
 
-var characters = [p1, p2];
+var playerH = {
+  //player 1
+  player1PosX: pinPongBlock.getBoundingClientRect().left,
+  player1PosY: pinPongBlock.getBoundingClientRect().top + pinPongBlock.getBoundingClientRect().height / 2 - player1.getBoundingClientRect().height / 2,
+  player1Speed: 0,
 
+  //player 2
+  player2PosX: pinPongBlock.getBoundingClientRect().left + pinPongBlock.getBoundingClientRect().width - player2.getBoundingClientRect().width,
+  player2PosY: pinPongBlock.getBoundingClientRect().top + pinPongBlock.getBoundingClientRect().height / 2 - player1.getBoundingClientRect().height / 2,
+  player2Speed: 0,
+  width: 10,
+  height: 100,
 
-function drawCharacter() {
-  var BG = document.getElementById('BG');
-  for (var i = 0; i < characters.length; i++) {
-    var person = document.createElement('div');
-    person.id = `p${i + 1}`;
-    person.style.width = characters[i].width + 'px';
-    person.style.height = characters[i].height + 'px';
-    person.style.position = characters[i].position;
-    person.style.transform = characters[i].transform;
-    person.style.top = characters[i].top;
-    person.style.left = characters[i].left + '%';
-    person.style.backgroundColor = characters[i].color;
-    BG.insertAdjacentElement('afterbegin', person);
+  Update: function () {
+    var player1Obj = player1;
+    var player2Obj = player2;
+
+    player1Obj.style.left = this.player1PosX + "px";
+    player1Obj.style.top = this.player1PosY + "px";
+
+    player2Obj.style.left = this.player2PosX + "px";
+    player2Obj.style.top = this.player2PosY + "px";
   }
-}
+};
+playerH.Update();
 
-//characters constructor
-function Character(color, translate, left) {
-  this.width = 10;
-  this.height = 100;
-  this.transform = translate;
-  this.position = 'absolute';
-  this.color = color;
-  this.top = '50%';
-  this.left = left;
-}
+var playerAreaH = {
+  width: 10,
+  height: pinPongBlock.getBoundingClientRect().height
+};
 
-//ball
+//Работа с мячем
+var ball = document.createElement('div');
+ball.style.width = '20px';
+ball.style.height = '20px';
+ball.style.borderRadius = '10px';
+ball.style.backgroundColor = 'black';
+ball.style.position = 'absolute';
+pinPongBlock.appendChild(ball);
 
-
-function drawBall() {
-  var ball = document.createElement('div');
-  var BG = document.getElementById('BG');
-  ball.id = 'ball';
-  ball.style.width = ball.style.height = '20px';
-  ball.style.backgroundColor = 'black';
-  ball.style.borderRadius = '50%';
-  ball.style.top = ((BG.offsetHeight - ball.offsetHeight) / 2) + 'px';
-  ball.style.left = ((BG.offsetWidth - ball.offsetWidth) / 2) + 'px';
-/*
-  ball.style.top = BG.offsetHeight/ 2 + 'px';
-*/
-  /*  ball.style.top = 0 + 'px';
-    ball.style.left = 0 + 'px';*/
-  ball.style.position = 'absolute';
-  BG.insertAdjacentElement('afterbegin', ball);
-  console.log((BG.offsetHeight - ball.offsetHeight) / 2);
-  console.log(BG.offsetHeight);
-  console.log(ball.getBoundingClientRect());
-}
-
-/*var ball = {
-  PosX: 0,
-  PosY: 0,
-  SpeedX: 15,
-  SpeedY: 15,
+var ballH = {
+  PosX: pinPongBlock.getBoundingClientRect().left + pinPongBlock.getBoundingClientRect().width / 2 - ball.getBoundingClientRect().width / 2,
+  PosY: pinPongBlock.getBoundingClientRect().top + pinPongBlock.getBoundingClientRect().height / 2 - ball.getBoundingClientRect().height / 2,
+  SpeedX: 0,
+  SpeedY: 0,
   width: 20,
   height: 20,
 
   Update: function () {
-    var ballObj = document.getElementById('ball');
-    var BG = document.getElementById('BG');
-/!*    this.PosX = (BG.offsetWidth / 2) - (this.width / 2);
-    this.PosY = (BG.offsetHeight / 2) - (this.height / 2);*!/
-    ballObj.style.position = 'absolute';
-    ballObj.style.left = this.PosX + "px";
-    ballObj.style.top = this.PosY + "px";
-    console.log(this.width);
+    var ballObj = ball;
+    ballObj.style.left = this.PosX + 'px';
+    ballObj.style.top = this.PosY + 'px';
   }
-};*/
+};
+ballH.Update();
 
-var AreaH = {
-  width: 600,
-  height: 400
-}
+var areaH = {
+  width: pinPongBlock.getBoundingClientRect().width,
+  height: pinPongBlock.getBoundingClientRect().height
+};
 
-/*var ball = document.createElement('div');
-function drawBall() {
-  var BG = document.getElementById('BG');
-  ball.id = 'dall';
-  ball.style.width = ball.style.height = '20px';
-  ball.style.backgroundColor = 'black';
-  ball.style.borderRadius = '50%';
-  ball.style.position = 'absolute';
-  ball.style.top = '50%';
-  ball.style.left = '50%';
-  ball.style.transform = 'translate(-50%, -50%)';
-  BG.insertAdjacentElement('afterbegin', ball);
+window.addEventListener('keydown', function (EO) {
+  EO = EO || window.event;
+  EO.preventDefault();
 
-}
+  //push CRL
+  if (EO.keyCode === 17) {
+    playerH.player1Speed = 5;
+  }
+  //push SHIFT
+  if (EO.keyCode === 16) {
+    playerH.player1Speed = -5;
+  }
+  //push CRL
+  if (EO.keyCode === 40) {
+    playerH.player2Speed = 5;
+  }
+  //push SHIFT
+  if (EO.keyCode === 38) {
+    playerH.player2Speed = -5;
+  }
+});
 
-console.log(ball.getBoundingClientRect());*/
+window.addEventListener('keyup', function (EO) {
+  EO = EO || window.event;
+  EO.preventDefault();
 
+  //push CRL
+  if (EO.keyCode === 17) {
+    playerH.player1Speed = 0;
+  }
+  //push SHIFT
+  if (EO.keyCode === 16) {
+    playerH.player1Speed = 0;
+  }
+  //push CRL
+  if (EO.keyCode === 40) {
+    playerH.player2Speed = 0;
+  }
+  //push SHIFT
+  if (EO.keyCode === 38) {
+    playerH.player2Speed = 0;
+  }
+});
+
+//апускаем игру
 function startGame() {
-  setInterval(game, 40);
+  ballH.SpeedX = 3;
+  ballH.SpeedY = 3;
 }
 
-function game() {
-  ball.PosX += ball.SpeedX;
-// вылетел ли мяч правее стены?
-  if (ball.PosX + ball.width > AreaH.width) {
-    ball.SpeedX = -ball.SpeedX;
-    ball.PosX = AreaH.width - ball.width;
+// работаем с таймером
+requestAnimationFrame(tick);
+
+function tick() {
+  playerH.Update();
+
+  //player 1
+  playerH.player1PosY += playerH.player1Speed;
+
+  //ниже пола?
+  if (playerH.player1PosY + playerH.height > (pinPongBlock.getBoundingClientRect().top + playerAreaH.height)) {
+    playerH.player1PosY = pinPongBlock.getBoundingClientRect().top + playerAreaH.height - playerH.height;
   }
-  if (ball.PosX < 0) // вылетел ли мяч левее стены
-  {
-    ball.SpeedX = -ball.SpeedX;
-    ball.PosX = 0;
+
+  //выше потодка?
+  if (playerH.player1PosY < pinPongBlock.getBoundingClientRect().top) {
+    playerH.player1PosY = pinPongBlock.getBoundingClientRect().top;
   }
-  ball.PosY += ball.SpeedY;
+
+  //player 2
+  playerH.player2PosY += playerH.player2Speed;
+
+  //ниже пола?
+  if (playerH.player2PosY + playerH.height > (pinPongBlock.getBoundingClientRect().top + playerAreaH.height)) {
+    playerH.player2PosY = pinPongBlock.getBoundingClientRect().top + playerAreaH.height - playerH.height;
+  }
+  //выше пола?
+  if (playerH.player2PosY < pinPongBlock.getBoundingClientRect().top) {
+    playerH.player2PosY = pinPongBlock.getBoundingClientRect().top;
+  }
+
+
+  //ball
+  ballH.PosX -= ballH.SpeedX;
+
+  // вылетел ли мяч правее стены?
+  if ((ballH.PosY + ballH.height < playerH.player2PosY || ballH.PosY > (playerH.player2PosY + playerH.height))
+    && ballH.PosX + ballH.width >= (pinPongBlock.getBoundingClientRect().left + pinPongBlock.getBoundingClientRect().width)) {
+
+    score1 += 1;
+    scoreInnerHTML();
+    ballH.SpeedX = 0;
+    ballH.SpeedY = 0;
+
+    ballH.PosX = pinPongBlock.getBoundingClientRect().left + pinPongBlock.getBoundingClientRect().width - ballH.width - 1;
+
+    settimeout = window.setTimeout(function () {
+      ballH.PosX = pinPongBlock.getBoundingClientRect().left + playerH.width;
+      ballH.PosY = playerH.player1PosY + playerH.height / 2;
+      startGame();
+    }, 2000);
+
+  } else if (!(ballH.PosY + ballH.height < playerH.player2PosY || ballH.PosY > (playerH.player2PosY + playerH.height))
+    && ballH.PosX + ballH.width > (playerH.player2PosX)) {
+    ballH.SpeedX = -ballH.SpeedX;
+    ballH.PosX = pinPongBlock.getBoundingClientRect().left + pinPongBlock.getBoundingClientRect().width - playerH.width - ballH.width;
+  }
+
+  // вылетел ли мяч левее стены
+  if ((ballH.PosY + ballH.height < playerH.player1PosY || ballH.PosY > (playerH.player1PosY + playerH.height))
+    && ballH.PosX <= (pinPongBlock.getBoundingClientRect().left)) {
+
+    score2 += 1;
+    scoreInnerHTML();
+    ballH.SpeedX = 0;
+    ballH.SpeedY = 0;
+
+    ballH.PosX = pinPongBlock.getBoundingClientRect().left + 1;
+    settimeout = window.setTimeout(function () {
+      ballH.PosX = pinPongBlock.getBoundingClientRect().left + pinPongBlock.getBoundingClientRect().width - playerH.width;
+      ballH.PosY = playerH.player2PosY + playerH.height / 2;
+      startGame();
+    }, 2000);
+
+  } else if (!(ballH.PosY + ballH.height < playerH.player1PosY || ballH.PosY > (playerH.player1PosY + playerH.height))
+    && ballH.PosX < (playerH.width + playerH.player1PosX)) {
+    ballH.SpeedX =- ballH.SpeedX;
+    ballH.PosX = pinPongBlock.getBoundingClientRect().left + playerH.width;
+  }
+
+  ballH.PosY -= ballH.SpeedY;
   // вылетел ли мяч ниже пола?
-  if (ball.PosY + ball.height > AreaH.height) {
-    ball.SpeedY = -ball.SpeedY;
-    ball.PosY = AreaH.height - ball.height;
-  }
-  // вылетел ли мяч выше потолка?
-  if (ball.PosY < 0) {
-    ball.SpeedY = -ball.SpeedY;
-    ball.PosY = 0;
+  if (ballH.PosY + ballH.height > (pinPongBlock.getBoundingClientRect().top + areaH.height)) {
+    ballH.SpeedY =- ballH.SpeedY;
+    ballH.PosY = pinPongBlock.getBoundingClientRect().top + areaH.height - ballH.height;
   }
 
-  ball.Update();
+  // вылетел ли мяч выше потолка?
+  if (ballH.PosY < pinPongBlock.getBoundingClientRect().top) {
+    ballH.SpeedY =- ballH.SpeedY;
+    ballH.PosY = pinPongBlock.getBoundingClientRect().top;
+  }
+
+  ballH.Update();
+  requestAnimationFrame(tick);
 }
 
-ball.Update();
+
+
