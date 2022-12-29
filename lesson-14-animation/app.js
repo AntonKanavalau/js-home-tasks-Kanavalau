@@ -9,9 +9,6 @@ pinPongBlock.style.backgroundColor = '#ff00003b';
 // работаем с таймером
 requestAnimationFrame(tick);
 
-//работа со временем
-var settimeout;
-
 //Табло счета
 var score = document.createElement('div');
 var score1 = 0; //score first player
@@ -196,7 +193,7 @@ function tick() {
 
     ballH.PosX = pinPongBlock.getBoundingClientRect().left + pinPongBlock.getBoundingClientRect().width - ballH.width - 1;
 
-    settimeout = window.setTimeout(function () {
+    setTimeout(function () {
       ballH.PosX = pinPongBlock.getBoundingClientRect().left + playerH.width;
       ballH.PosY = playerH.player1PosY + playerH.height / 2;
       startGame();
@@ -218,7 +215,7 @@ function tick() {
     ballH.SpeedY = 0;
 
     ballH.PosX = pinPongBlock.getBoundingClientRect().left + 1;
-    settimeout = window.setTimeout(function () {
+    setTimeout(function () {
       ballH.PosX = pinPongBlock.getBoundingClientRect().left + pinPongBlock.getBoundingClientRect().width - playerH.width;
       ballH.PosY = playerH.player2PosY + playerH.height / 2;
       startGame();
