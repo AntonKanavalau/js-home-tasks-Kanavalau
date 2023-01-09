@@ -69,3 +69,4 @@ function Drag_Stop(EO) {
   DragShiftX = 0;
   DragShiftY = 0;
 }
+
