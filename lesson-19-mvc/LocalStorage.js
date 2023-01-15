@@ -2,6 +2,7 @@ function TLocalStorage(keyName) {
   var self = this,
     pHash = {};
 
+
   self.addValue = function (key, value) {
     pHash[key] = value;
     localStorage.setItem(keyName, JSON.stringify(pHash));
@@ -14,7 +15,7 @@ function TLocalStorage(keyName) {
   self.deleteValue = function (key) {
     delete pHash[key];
     localStorage.setItem(keyName, JSON.stringify(pHash));
-    return delete pHash[key];
+    return pHash[key];
   };
 
   self.getKeys = function () {
@@ -22,8 +23,12 @@ function TLocalStorage(keyName) {
   };
 
   self.reset = function () {
-    pHash = JSON.parse(localStorage.getItem(keyName));
-  }
+    if (localStorage.getItem(keyName)) {
+      if (keyName === "DRINKS") {
+        pHash = JSON.parse(localStorage.getItem(keyName));
+      }
+    }
+  };
 
   self.reset();
 }
