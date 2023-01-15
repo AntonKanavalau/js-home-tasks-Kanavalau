@@ -49,7 +49,6 @@
     <script>
       'use strict';
 
-
       var drinkStorage = new TLocalStorage("DRINKS");
 
       function addDrink() {
@@ -59,11 +58,10 @@
         if (drinkName) {
           fHash.recipe = prompt('Введите рецепт приготовления напитка', 'Test Recipe');
           fHash.alcohol = confirm('Ваш напиток алкогольный?') ? 'да' : 'нет';
-          drinkStorage.addValue(drinkName, fHash);
+          return drinkStorage.addValue(drinkName, fHash);
         } else {
           alert('Ввод отменен!')
         }
-
       }
 
       function showDrinkInfo() {

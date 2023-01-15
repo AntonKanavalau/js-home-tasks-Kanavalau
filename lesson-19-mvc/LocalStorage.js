@@ -24,6 +24,6 @@ function TLocalStorage(keyName) {
   self.reset = function () {
     pHash = JSON.parse(localStorage.getItem(keyName));
   }
-  
+
   self.reset();
 }
