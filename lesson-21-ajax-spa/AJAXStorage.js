@@ -3,42 +3,31 @@ function TAJAXStorage(keyName) {
   var self = this,
     pHash = {};
 
+  var src = "http://fe.it-academy.by/AjaxStringStorage2.php";
 
-  $.ajax("http://fe.it-academy.by/AjaxStringStorage2.php",
+  $.ajax(
     {
-      type: 'POST',
+      url: src,
+      type: "POST",
       cache: false,
-      dataType: 'json',
-      data: {f: 'READ', n: 'Kanavalau_Task_Lesson-21'},
-      success: DataLoaded,
-      error: ErrorHandler
+      data: {f: "READ", n: "Kanavalau_Task_Lesson21"}, /*почему при добавлении Kanavalau_Task_Lesson-21 выдает
+       ошибку синтаксиса?  */
+      success: dataLoaded,
+      error: errorHandler
     });
 
-  function DataLoaded(data) {
-    if (data !== "") {
+  function dataLoaded(data) {
+    if (data.result !== "") {
       pHash = JSON.parse(data.result);
       console.log("DataLoaded - " + data.result);
-    } else if (data === "") {
-      $.ajax("http://fe.it-academy.by/AjaxStringStorage2.php",
-        {
-          type: 'POST',
-          cache: false,
-          dataType: 'json',
-          data: {f: 'INSERT', n: 'Kanavalau_Task_Lesson-21', v: JSON.stringify(pHash)},
-          success: DataLoadedInsert,
-          error: ErrorHandler
-        });
-
-      function DataLoadedInsert(data) {
-        console.log("DataLoadedInsert - " + data.result);
-      }
     }
   }
 
-
   self.addValue = function (key, value) {
+    console.log(key);
+    console.log(value);
     pHash[key] = value;
-    addValueOnServer(self.pHash);
+    addValueOnServer(pHash);
   };
 
   self.getValue = function (key) {
@@ -56,31 +45,31 @@ function TAJAXStorage(keyName) {
   };
 
   function addValueOnServer(pHash) {
-    var password = 123456789;
+    var password = 123456;
 
-    $.ajax("http://fe.it-academy.by/AjaxStringStorage2.php",
+    $.ajax(
       {
-        type: 'POST',
+        url: src,
+        type: "POST",
         cache: false,
-        dataType: 'json',
-        data: {f: 'LOCKGET', n: 'Kanavalau_Task_Lesson-21', p: password},
-        success: DataLoadedLockget,
-        error: ErrorHandler
+        data: {f: "LOCKGET", n: "Kanavalau_Task_Lesson21", p: password},
+        success: dataLoadedLockget,
+        error: errorHandler
       });
 
-    function DataLoadedLockget(data) {
+    function dataLoadedLockget(data) {
       console.log("DataLoadedLockget - " + data.result);
-      $.ajax("http://fe.it-academy.by/AjaxStringStorage2.php",
+      $.ajax(
         {
-          type: 'POST',
+          url: src,
+          type: "POST",
           cache: false,
-          dataType: 'json',
-          data: {f: 'UPDATE', n: 'Kanavalau_Task_Lesson-21', p: password, v: JSON.stringify(pHash)},
-          success: DataLoadedUpdate,
-          error: ErrorHandler
+          data: {f: "UPDATE", n: "Kanavalau_Task_Lesson21", p: password, v: JSON.stringify(pHash)},
+          success: dataLoadedUpdate,
+          error: errorHandler
         });
 
-      function DataLoadedUpdate(data) {
+      function dataLoadedUpdate(data) {
         // ------------------------------------------------------------------
         console.log("DataLoadedUpdate - " + data.result);
         // ------------------------------------------------------------------
@@ -88,7 +77,7 @@ function TAJAXStorage(keyName) {
     }
   }
 
-  function ErrorHandler(jqXHR, StatusStr, ErrorStr) {
+  function errorHandler(jqXHR, StatusStr, ErrorStr) {
     alert(StatusStr + " " + ErrorStr);
   }
 
