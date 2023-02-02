@@ -58,7 +58,7 @@ function renderNewState() {
                           ${changeTitle(letter)}
                          </ul>
                       </div>`).join('')}
-                      <input type="button" value="Вернуться домой" onclick="switchToHome()">
+                      <input type="button" value="Вернуться Домой" onclick="switchToHome()">
   `;
 
       function changeTitle(letter) {
@@ -117,7 +117,7 @@ function changeArticle(statePage) {
     `).join('')}
     <p>${text}</p>
     <input type="button" value="Вернуться к Оглавлению" onclick="switchToNav()">
-    <input type="button" value="Вернуться к Оглавлению" onclick="switchToHome()">
+    <input type="button" value="Вернуться домой" onclick="switchToHome()">
   `;
 
   console.log(statePage);
