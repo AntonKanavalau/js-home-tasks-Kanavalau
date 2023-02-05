@@ -70,4 +70,3 @@ function Drag_Stop(EO) {
   DragShiftY = 0;
 }
 
-
